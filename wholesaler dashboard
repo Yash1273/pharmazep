@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Wholesaler Dashboard - Medical Wholesaler Platform</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    header {
+      background: #007bff;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+    }
+    .product-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    .product-card {
+      background: white;
+      border: 1px solid #ddd;
+      padding: 15px;
+      width: 200px;
+      text-align: center;
+    }
+    .wholesaler-form {
+      margin-top: 20px;
+    }
+    .delete-btn {
+      background: #ff4d4d;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Wholesaler Dashboard</h1>
+  </header>
+  <div class="container">
+    <!-- Wholesaler Form -->
+    <div class="wholesaler-form">
+      <h2>List Your Product</h2>
+      <form id="wholesaler-form">
+        <label for="product-name">Product Name:</label>
+        <input type="text" id="product-name" name="product-name" required>
+        <label for="product-price">Price:</label>
+        <input type="number" id="product-price" name="product-price" required>
+        <button type="submit">Add Product</button>
+      </form>
+    </div>
+
+    <!-- Product Listing -->
+    <h2>Your Listed Products</h2>
+    <div class="product-list" id="product-list">
+      <!-- Products will be dynamically added here -->
+    </div>
+  </div>
+
+  <script>
+    // Sample product data
+    let products = [];
+
+    // Display products
+    const productList = document.getElementById("product-list");
+
+    function renderProducts() {
+      productList.innerHTML = "";
+
+      products.forEach(product => {
+        // Add product cards
+        const productCard = document.createElement("div");
+        productCard.className = "product-card";
+        productCard.innerHTML = `
+          <h3>${product.name}</h3>
+          <p>Price: $${product.price}</p>
+          <button class="delete-btn" onclick="deleteProduct(${product.id})">Delete</button>
+        `;
+        productList.appendChild(productCard);
+      });
+    }
+
+    // Handle wholesaler form submission
+    document.getElementById("wholesaler-form").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const productName = document.getElementById("product-name").value;
+      const productPrice = document.getElementById("product-price").value;
+
+      const newProduct = {
+        id: products.length + 1,
+        name: productName,
+        price: parseFloat(productPrice),
+      };
+
+      products.push(newProduct);
+      renderProducts();
+
+      // Reset form
+      document.getElementById("wholesaler-form").reset();
+    });
+
+    // Delete product
+    function deleteProduct(productId) {
+      products = products.filter(product => product.id !== productId);
+      renderProducts();
+    }
+  </script>
+</body>
+</html>
